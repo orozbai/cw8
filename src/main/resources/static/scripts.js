@@ -153,7 +153,8 @@ async function createIngredients(formData) {
     }
 }
 
-document.getElementById('search-form-ingredients').addEventListener('submit', async function () {
+document.getElementById('search-form-ingredients').addEventListener('submit', async function (e) {
+    e.preventDefault();
     let inputIng = document.getElementById('search-ingredients')
     await fetch('www.thecocktaildb.com/api/json/v1/1/filter.php?i=' + inputIng)
         .then(respon => respon.json()).then(data => {
