@@ -139,7 +139,6 @@ async function createIngredients(formData) {
     for (let i = 0; i < maxLength; i++) {
         let ingredientName = ingredients[i];
         let measureName = measure[i];
-        console.log(ingredientName);
         let div = document.getElementById('ingredient' + formData.get('idDrink'));
         const divElem = document.createElement('div')
         divElem.classList.add('card-body-elem');
@@ -152,4 +151,57 @@ async function createIngredients(formData) {
         divElem.appendChild(text);
         div.appendChild(divElem);
     }
+}
+
+document.getElementById('search-form-ingredients').addEventListener('submit', async function () {
+    let inputIng = document.getElementById('search-ingredients')
+    await fetch('www.thecocktaildb.com/api/json/v1/1/filter.php?i=' + inputIng)
+        .then(respon => respon.json()).then(data => {
+            console.log(data)
+                for (let i = 0; i < data.ingredients.length; i++) {
+                    let ing = data.ingredients[i];
+                    let id = ing.idIngredient;
+                    let ingredientName = ing.strIngredient;
+                    let description = ing.strDescription;
+                    let strType = ing.strType;
+                    let strAlcohol = ing.strAlcohol;
+                    let strABV = ing.strABV;
+                    const newFormData = new FormData();
+                    newFormData.append('id', id);
+                    newFormData.append('ingredient', ingredientName);
+                    newFormData.append('description', description);
+                    newFormData.append('type', strType);
+                    newFormData.append('alcohol', strAlcohol);
+                    newFormData.append('abv', strABV);
+                    createModal(newFormData);
+                    console.log(newFormData);
+                }
+            }
+        )
+})
+
+function createModal(formData) {
+    const modalDialog = document.createElement('div');
+    modalDialog.classList.add('modal-ingredient');
+    modalDialog.id = formData.get('id');
+
+    const modal = document.createElement('div');
+    modal.classList.add('modal-content-ingredient');
+    const img = document.createElement('img');
+    img.src = 'www.thecocktaildb.com/images/ingredients/' + formData.get('ingredient') + '-Small.png'
+    img.alt = 'name image';
+    modal.appendChild(img);
+    const desc = document.createElement('p');
+    desc.textContent = formData.get('description');
+    modal.appendChild(desc);
+    const type = document.createElement('p');
+    type.textContent = formData.get('type');
+    modal.appendChild(type);
+    const alcohol = document.createElement('p');
+    alcohol.textContent = formData.get('alcohol');
+    modal.appendChild(alcohol);
+    modalDialog.appendChild(modal);
+
+    const getId = document.getElementById('ingredients-container');
+    getId.appendChild(modalDialog);
 }
