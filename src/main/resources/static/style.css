@@ -1,0 +1,17 @@
+#search-form {
+    margin-top: 100px;
+    margin-bottom: 10px;
+}
+
+.all-form-search {
+    margin: 50px;
+}
+
+#search-form-cocktail {
+    display: inline-block;
+}
+
+#search-form-ingredients {
+    display: inline-block;
+    margin-left: 50px;
+}
